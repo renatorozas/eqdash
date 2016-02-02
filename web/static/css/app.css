@@ -1,11 +1,20 @@
+body {
+  margin-top: 1rem;
+}
+
 #map {
-  height: 500px;
+  height: 400px;
+  width: 100%;
 }
 
 .page-header h1 > small {
-  font-size: 24px;
+  font-size: 20px;
 }
 
 .stats {
   margin-top: 20px;
+}
+
+.stats h5 {
+  margin-bottom: 1rem;
 }

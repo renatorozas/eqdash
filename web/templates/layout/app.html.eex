@@ -18,15 +18,16 @@
   </head>
 
   <body>
-    <div class="container">
-      <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
-      <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
+    <div class="container header">
+      <div class="page-header">
+        <h1>eqdash <small>live earthquakes dashboard</small></h1>
+      </div>
+    </div>
 
-      <main role="main">
-        <%= render @view_module, @view_template, assigns %>
-      </main>
+    <main role="main">
+      <%= render @view_module, @view_template, assigns %>
+    </main>
 
-    </div> <!-- /container -->
     <script>
       var map;
 
@@ -36,6 +37,7 @@
           mapTypeId: google.maps.MapTypeId.HYBRID,
           mapTypeControl: false,
           streetViewControl: false,
+          scrollwheel: false
         });
 
         if (navigator.geolocation) {
