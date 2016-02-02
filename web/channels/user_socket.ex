@@ -2,7 +2,7 @@ defmodule Eqdash.UserSocket do
   use Phoenix.Socket
 
   ## Channels
-  # channel "rooms:*", Eqdash.RoomChannel
+  channel "events:*", Eqdash.EventChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket

@@ -7,21 +7,18 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Hello Eqdash!</title>
+    <title>eqdash</title>
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
+
+    <!-- CSS Reset -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css">
+
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
   </head>
 
   <body>
     <div class="container">
-      <header class="header">
-        <nav role="navigation">
-          <ul class="nav nav-pills pull-right">
-            <li><a href="http://www.phoenixframework.org/docs">Get Started</a></li>
-          </ul>
-        </nav>
-        <span class="logo"></span>
-      </header>
-
       <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
       <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
 
@@ -30,6 +27,46 @@
       </main>
 
     </div> <!-- /container -->
+    <script>
+      var map;
+
+      function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 4,
+          mapTypeId: google.maps.MapTypeId.HYBRID,
+          mapTypeControl: false,
+          streetViewControl: false,
+        });
+
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function (position) {
+            initialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+            map.setCenter(initialLocation);
+          });
+        } else {
+          map.setCenter(new google.maps.LatLng(47.6149942, -122.4759899));
+        }
+      }
+
+      function addEvents(events) {
+        for (var i in events) {
+          var eventCircle = new google.maps.Circle({
+            strokeColor: '#FF0000',
+            strokeOpacity: 0.8,
+            strokeWeight: 1,
+            fillColor: '#FF0000',
+            fillOpacity: 0.35,
+            map: map,
+            center: {
+              lat: parseFloat(events[i].latitude),
+              lng: parseFloat(events[i].longitude)
+            },
+            radius: parseInt(events[i].magnitude) * 10000
+          });
+        }
+      }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRiCcfbEtvvz2_jQ_lDcs0voDEVkG6_jA&callback=initMap"></script>
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
   </body>
 </html>
