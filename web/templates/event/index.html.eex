@@ -1,32 +1,28 @@
-<div class="page-header">
-  <h1>eqdash <small>live earthquakes dashboard</small></h1>
-</div>
+<div id="map"></div>
 
-<div class="row">
-  <div class="column" id="map"></div>
-</div>
+<div class="container">
+  <div class="row stats">
+    <div class="column">
+      <h5>Latest</h5>
 
-<div class="row stats">
-  <div class="column">
-    <h5>Latest</h5>
-
-    <table>
-      <thead>
-        <tr>
-          <th>Where</th>
-          <th>When</th>
-          <th>Magnitude</th>
-        </tr>
-      </thead>
-      <tbody>
-        <%= for event <- @events do %>
-        <tr>
-          <td><%= event.place %></td>
-          <td><%= event.time %></td>
-          <td><%= event.magnitude %></td>
-        </tr>
-        <% end %>
-      </tbody>
-    </table>
+      <table>
+        <thead>
+          <tr>
+            <th>Where</th>
+            <th>When</th>
+            <th>Magnitude</th>
+          </tr>
+        </thead>
+        <tbody>
+          <%= for event <- @events do %>
+          <tr>
+            <td><%= event.place %></td>
+            <td><%= event.time %></td>
+            <td><%= event.magnitude %></td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
