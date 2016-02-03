@@ -1,7 +1,7 @@
 defmodule Eqdash.EventTest do
   use Eqdash.ModelCase
 
-  alias Eqdash.Event
+  alias Eqdash.{Event, Repo}
 
   @valid_attrs %{
     alert: "some content",
@@ -36,5 +36,29 @@ defmodule Eqdash.EventTest do
   test "changeset with invalid attributes" do
     changeset = Event.changeset(%Event{}, @invalid_attrs)
     refute changeset.valid?
+  end
+
+  # TODO: Make this more readable.
+  test "latest X events order by :time" do
+    assert Event.latest(2) == []
+
+    event = %Event{
+      code: "code",
+      event_id: "event_id"
+    }
+
+    datetime = %Ecto.DateTime{
+      year: 2015, month: 2, day: 1,
+      hour: 16, min: 0, sec: 0
+    }
+
+    Repo.insert!(%Event{event | time: datetime})
+
+    latest_by_time = [
+      Repo.insert!(%Event{event | time: %Ecto.DateTime{datetime | day: 3}}),
+      Repo.insert!(%Event{event | time: %Ecto.DateTime{datetime | day: 2}})
+    ]
+
+    assert Event.latest(2) == latest_by_time
   end
 end

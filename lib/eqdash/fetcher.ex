@@ -28,12 +28,12 @@ defmodule Eqdash.Fetcher do
 
   # TODO: Update this function to return new_events.
   defp upsert_events(events) do
-    Enum.each(events, fn(event_attrs) ->
-      case Event.get_by_event_id(event_attrs[:event_id]) do
-        [] -> %Event{}
-        [event] -> event
+    Enum.each(events, fn(params) ->
+      case Repo.get_by(Event, event_id: params[:event_id]) do
+        nil -> %Event{}
+        event -> event
       end
-      |> Event.changeset(event_attrs)
+      |> Event.changeset(params)
       |> Repo.insert_or_update!
     end)
   end

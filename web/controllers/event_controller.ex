@@ -4,7 +4,6 @@ defmodule Eqdash.EventController do
   alias Eqdash.Event
 
   def index(conn, _params) do
-    events = Event.latest(100)
-    render conn, "index.html", events: events
+    render conn, "index.html", events: Event.latest(50)
   end
 end

@@ -67,17 +67,8 @@ defmodule Eqdash.Event do
     |> cast(params, @required_fields, @optional_fields)
   end
 
-  def get_by_event_id(event_id) do
-    query = from e in Eqdash.Event, where: e.event_id == ^event_id
-
-    Repo.all(query)
-  end
-
   def latest(limit) do
-    query = from e in Eqdash.Event,
-            order_by: [desc: :time],
-            limit: ^limit
-
+    query = from e in __MODULE__, order_by: [desc: :time], limit: ^limit
     Repo.all(query)
   end
 end
