@@ -16,7 +16,8 @@ defmodule Eqdash.Fetcher do
   end
 
   def handle_info(:fetch, state) do
-    events = USGS.Event.fetch!(:all_hour)
+    {:ok, response} = USGS.events({:all, :hour})
+    events = response.body |> EventMapper.from_usgs
 
     new_events = upsert_events(events)
     broadcast(new_events)

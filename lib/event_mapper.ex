@@ -1,12 +1,18 @@
-defmodule USGS.Event do
-  def fetch!(:all_hour) do
-    USGS.get!("/summary/all_hour.geojson").body
+defmodule EventMapper do
+  @doc ~S"""
+  Process and map a list of USGS events into a list of Eqdash.Event.
+  """
+  def from_usgs(body) do
+    body
     |> Poison.decode!
     |> Dict.get("features")
-    |> Enum.map(&USGS.Event.changeset/1)
+    |> Enum.map(&to_event/1)
   end
 
-  def changeset(data) do
+  @doc ~S"""
+  Process a USGS event into a Eqdash.Event.
+  """
+  def to_event(data) do
     %{
       alert: data["properties"]["alert"],
       cdi: data["properties"]["cdi"],
@@ -27,7 +33,7 @@ defmodule USGS.Event do
       time: time(data),
       tsunami: tsunami(data),
       type: data["properties"]["type"],
-      tz: data["properties"]["tz"],
+      tz_offset: data["properties"]["tz"],
       updated: updated(data),
     }
   end

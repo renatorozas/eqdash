@@ -6,11 +6,11 @@ defmodule Eqdash.Event do
   @derive {Poison.Encoder, only: [:event_id, :latitude, :longitude, :magnitude, :place]}
   schema "events" do
     field :alert, :string
+    field :associated_event_ids, :string
     field :cdi, :decimal
     field :code, :string
     field :detail, :string
     field :event_id, :string
-    field :associated_event_ids, :string
     field :latitude, :decimal
     field :longitude, :decimal
     field :magnitude, :decimal
@@ -24,7 +24,7 @@ defmodule Eqdash.Event do
     field :time, Ecto.DateTime
     field :tsunami, :boolean, default: false
     field :type, :string
-    field :tz, :integer
+    field :tz_offset, :integer
     field :updated, Ecto.DateTime
 
     timestamps
@@ -36,9 +36,9 @@ defmodule Eqdash.Event do
   )
   @optional_fields ~w(
     alert
+    associated_event_ids
     cdi
     detail
-    associated_event_ids
     latitude
     longitude
     magnitude
@@ -52,7 +52,7 @@ defmodule Eqdash.Event do
     time
     tsunami
     type
-    tz
+    tz_offset
     updated
   )
 

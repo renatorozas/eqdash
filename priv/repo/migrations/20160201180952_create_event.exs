@@ -4,11 +4,11 @@ defmodule Eqdash.Repo.Migrations.CreateEvent do
   def change do
     create table(:events) do
       add :alert, :string
+      add :associated_event_ids, :string
       add :cdi, :decimal
       add :code, :string
       add :detail, :string
       add :event_id, :string
-      add :associated_event_ids, :string
       add :latitude, :decimal
       add :longitude, :decimal
       add :magnitude, :decimal
@@ -22,7 +22,7 @@ defmodule Eqdash.Repo.Migrations.CreateEvent do
       add :time, :datetime
       add :tsunami, :boolean, default: false
       add :type, :string
-      add :tz, :integer
+      add :tz_offset, :integer
       add :updated, :datetime
 
       timestamps
