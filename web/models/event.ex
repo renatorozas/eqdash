@@ -3,7 +3,16 @@ defmodule Eqdash.Event do
 
   alias Eqdash.Repo
 
-  @derive {Poison.Encoder, only: [:event_id, :latitude, :longitude, :magnitude, :place]}
+  @derive {
+    Poison.Encoder, only: [
+      :event_id,
+      :latitude,
+      :longitude,
+      :magnitude,
+      :place,
+      :time_local
+    ]
+  }
   schema "events" do
     field :alert, :string
     field :associated_event_ids, :string

@@ -17,7 +17,7 @@
           <%= for event <- @events do %>
           <tr>
             <td><%= event.place %></td>
-            <td><%= event.time_local |> format_datetime("{Mshort} {D}, {h12}:{m} {AM}") %></td>
+            <td><%= event.time_local |> format_datetime %></td>
             <td><%= event.magnitude %></td>
           </tr>
           <% end %>
@@ -26,3 +26,77 @@
     </div>
   </div>
 </div>
+<script>
+var map;
+
+function initMap() {
+  map = new google.maps.Map(document.getElementById('map'), {
+    zoom: 4,
+    mapTypeId: google.maps.MapTypeId.HYBRID,
+    mapTypeControl: false,
+    streetViewControl: false,
+    scrollwheel: false
+  });
+
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function (position) {
+      initialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+      map.setCenter(initialLocation);
+    });
+  } else {
+    map.setCenter(new google.maps.LatLng(47.6149942, -122.4759899));
+  }
+}
+
+function addEvents(events) {
+  for (var i in events) {
+    addMarker(events[i]);
+    addCircle(events[i]);
+  }
+}
+
+function addMarker(event) {
+  var marker = new google.maps.Marker({
+    animation: google.maps.Animation.DROP,
+    position: {
+      lat: parseFloat(event.latitude),
+      lng: parseFloat(event.longitude)
+    },
+    map: map,
+    title: event.place
+  });
+
+  var content = '<div class="info-window-content">'+
+    '<h6>Event information</h6>'+
+    '<ul>'+
+      '<li><strong>Where:</strong> ' + event.place + '</li>'+
+      '<li><strong>When:</strong> ' + event.time_local + '</li>'+
+      '<li><strong>Magnitude:</strong> ' + event.magnitude + '</li>'+
+    '</ul>'+
+    '</div>';
+
+  var infoWindow = new google.maps.InfoWindow({
+    content: content
+  });
+
+  marker.addListener('click', function() {
+    infoWindow.open(map, marker);
+  });
+}
+
+function addCircle(event) {
+  var circle = new google.maps.Circle({
+    strokeColor: '#FF0000',
+    strokeOpacity: 0.8,
+    strokeWeight: 1,
+    fillColor: '#FF0000',
+    fillOpacity: 0.35,
+    map: map,
+    center: {
+      lat: parseFloat(event.latitude),
+      lng: parseFloat(event.longitude)
+    },
+    radius: parseInt(event.magnitude) * 10000
+  });
+}
+</script>
