@@ -15,11 +15,11 @@ defmodule EventMapper do
   def to_event(data) do
     %{
       alert: data["properties"]["alert"],
+      associated_event_ids: data["properties"]["ids"],
       cdi: data["properties"]["cdi"],
       code: data["properties"]["code"],
       detail: data["properties"]["detail"],
       event_id: data["id"],
-      associated_event_ids: data["properties"]["ids"],
       latitude: latitude(data),
       longitude: longitude(data),
       magnitude: data["properties"]["mag"],
@@ -30,18 +30,30 @@ defmodule EventMapper do
       sig: data["properties"]["sig"],
       sources: data["properties"]["sources"],
       status: data["properties"]["status"],
-      time: time(data),
+      time_local: time_local(data),
+      time_utc: time_utc(data),
       tsunami: tsunami(data),
       type: data["properties"]["type"],
-      tz_offset: data["properties"]["tz"],
+      tz_offset_secs: tz_offset_secs(data),
       updated: updated(data),
     }
   end
 
-  defp time(data) do
+  defp time_utc(data) do
     round(data["properties"]["time"]/1000)
     |> DateTimeHelper.from_timestamp
     |> Ecto.DateTime.from_erl
+  end
+
+  defp time_local(data) do
+    round(data["properties"]["time"]/1000)
+    |> +tz_offset_secs(data)
+    |> DateTimeHelper.from_timestamp
+    |> Ecto.DateTime.from_erl
+  end
+
+  defp tz_offset_secs(data) do
+    data["properties"]["tz"] * 60
   end
 
   defp updated(data) do

@@ -20,10 +20,11 @@ defmodule Eqdash.EventTest do
     sig: 42,
     sources: "some content",
     status: "some content",
-    time: "2010-04-17 14:00:00",
+    time_local: "2010-04-17 14:10:00",
+    time_utc: "2010-04-17 14:00:00",
     tsunami: true,
     type: "some content",
-    tz: 42,
+    tz_offset_secs: 600,
     updated: "2010-04-17 14:00:00"
   }
   @invalid_attrs %{}
@@ -52,11 +53,11 @@ defmodule Eqdash.EventTest do
       hour: 16, min: 0, sec: 0
     }
 
-    Repo.insert!(%Event{event | time: datetime})
+    Repo.insert!(%Event{event | time_local: datetime})
 
     latest_by_time = [
-      Repo.insert!(%Event{event | time: %Ecto.DateTime{datetime | day: 3}}),
-      Repo.insert!(%Event{event | time: %Ecto.DateTime{datetime | day: 2}})
+      Repo.insert!(%Event{event | time_local: %Ecto.DateTime{datetime | day: 3}}),
+      Repo.insert!(%Event{event | time_local: %Ecto.DateTime{datetime | day: 2}})
     ]
 
     assert Event.latest(2) == latest_by_time

@@ -21,10 +21,11 @@ defmodule Eqdash.Event do
     field :sig, :integer
     field :sources, :string
     field :status, :string
-    field :time, Ecto.DateTime
+    field :time_local, Ecto.DateTime
+    field :time_utc, Ecto.DateTime
     field :tsunami, :boolean, default: false
     field :type, :string
-    field :tz_offset, :integer
+    field :tz_offset_secs, :integer
     field :updated, Ecto.DateTime
 
     timestamps
@@ -49,10 +50,11 @@ defmodule Eqdash.Event do
     sig
     sources
     status
-    time
+    time_local
+    time_utc
     tsunami
     type
-    tz_offset
+    tz_offset_secs
     updated
   )
 
@@ -68,7 +70,7 @@ defmodule Eqdash.Event do
   end
 
   def latest(limit) do
-    query = from e in __MODULE__, order_by: [desc: :time], limit: ^limit
+    query = from e in __MODULE__, order_by: [desc: :time_local], limit: ^limit
     Repo.all(query)
   end
 end

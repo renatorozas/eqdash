@@ -19,10 +19,11 @@ defmodule Eqdash.Repo.Migrations.CreateEvent do
       add :sig, :integer
       add :sources, :string
       add :status, :string
-      add :time, :datetime
+      add :time_local, :datetime
+      add :time_utc, :datetime
       add :tsunami, :boolean, default: false
       add :type, :string
-      add :tz_offset, :integer
+      add :tz_offset_secs, :integer
       add :updated, :datetime
 
       timestamps
