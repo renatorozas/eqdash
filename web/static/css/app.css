@@ -18,3 +18,11 @@ body {
 .stats h5 {
   margin-bottom: 1rem;
 }
+
+div.info-window-content h6 {
+  margin-bottom: 1rem;
+}
+
+.info-window-content ul li {
+  margin: 0;
+}
