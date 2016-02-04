@@ -43,8 +43,8 @@ defmodule Eqdash.Fetcher do
     Eqdash.Endpoint.broadcast_from!(
       self,
       "events:index",
-      "new_event",
-      %{foo: "bar"}
+      "new_events",
+      %{events: []}
     )
   end
 

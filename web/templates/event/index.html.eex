@@ -1,29 +1,8 @@
 <div id="map"></div>
 
 <div class="container">
-  <div class="row stats">
-    <div class="column">
-      <h5>Latest</h5>
-
-      <table>
-        <thead>
-          <tr>
-            <th>Where</th>
-            <th>When</th>
-            <th>Magnitude</th>
-          </tr>
-        </thead>
-        <tbody>
-          <%= for event <- @events do %>
-          <tr>
-            <td><%= event.place %></td>
-            <td><%= event.time_local |> format_datetime %></td>
-            <td><%= event.magnitude %></td>
-          </tr>
-          <% end %>
-        </tbody>
-      </table>
-    </div>
+  <div class="row">
+    <div class="column" id="event-box"></div>
   </div>
 </div>
 <script>

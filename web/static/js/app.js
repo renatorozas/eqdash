@@ -19,3 +19,79 @@ import "phoenix_html"
 // paths "./socket" or full ones "web/static/js/socket".
 
 import socket from "./socket"
+import React from "react"
+import ReactDOM from "react-dom"
+
+class EventBox extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {events: []};
+  }
+  componentWillMount() {
+    // Now that you are connected, you can join channels with a topic:
+    let channel = socket.channel("events:index", {})
+    let self = this
+
+    channel.on("new_events", payload => {
+      console.log(payload);
+    });
+
+    channel.join()
+      .receive("ok", resp => {
+        console.log("Subscribed successfully")
+        self.setState(resp)
+      })
+      .receive("error", resp => {
+        console.log("Unable to Subscribe", resp)
+      })
+  }
+  render() {
+    return (
+      <div className="eventBox">
+        <h5>Latest events</h5>
+        <EventList events={this.state.events} />
+      </div>
+    )
+  }
+}
+
+class EventList extends React.Component {
+  render() {
+    let rows = this.props.events.map((event) => {
+      return (
+        <Event key={event.event_id} place={event.place} time={event.time_local} magnitude={event.magnitude} />
+      )
+    })
+    return (
+      <table className="eventList">
+        <thead>
+          <tr>
+            <th>Where</th>
+            <th>When</th>
+            <th>Magnitude</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows}
+        </tbody>
+      </table>
+    )
+  }
+}
+
+class Event extends React.Component {
+  render() {
+    return (
+      <tr>
+        <td>{this.props.place}</td>
+        <td>{this.props.time}</td>
+        <td>{this.props.magnitude}</td>
+      </tr>
+    )
+  }
+}
+
+ReactDOM.render(
+  <EventBox />,
+  document.getElementById('event-box')
+)
