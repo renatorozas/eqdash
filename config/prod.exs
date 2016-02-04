@@ -13,7 +13,7 @@ use Mix.Config
 # which you typically run after static files are built.
 config :eqdash, Eqdash.Endpoint,
   http: [port: {:system, "PORT"}],
-  url: [scheme: "https", host: "pure-caverns-21842.herokuapp.com", port: 443],
+  url: [scheme: "https", host: "eqdash.herokuapp.com", port: 443],
   force_ssl: [rewrite_on: [:x_forwarded_proto]],
   cache_static_manifest: "priv/static/manifest.json",
   secret_key_base: System.get_env("SECRET_KEY_BASE")
