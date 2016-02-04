@@ -17,7 +17,7 @@
           <%= for event <- @events do %>
           <tr>
             <td><%= event.place %></td>
-            <td><%= event.time_local %></td>
+            <td><%= event.time_local |> format_datetime("{Mshort} {D}, {h12}:{m} {AM}") %></td>
             <td><%= event.magnitude %></td>
           </tr>
           <% end %>
