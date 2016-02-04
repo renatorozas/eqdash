@@ -40,6 +40,7 @@ class EventBox extends React.Component {
       .receive("ok", resp => {
         console.log("Subscribed successfully")
         self.setState(resp)
+        addEvents(resp.events)
       })
       .receive("error", resp => {
         console.log("Unable to Subscribe", resp)
