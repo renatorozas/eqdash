@@ -67,3 +67,5 @@ config :eqdash, Eqdash.Repo,
 # for the new static assets to be served after a hot upgrade:
 #
 #     config :eqdash, Eqdash.Endpoint, root: "."
+
+config :eqdash, :usgs_api, USGS

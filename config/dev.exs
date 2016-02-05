@@ -40,3 +40,5 @@ config :eqdash, Eqdash.Repo,
   database: "eqdash_dev",
   hostname: "localhost",
   pool_size: 10
+
+config :eqdash, :usgs_api, USGS

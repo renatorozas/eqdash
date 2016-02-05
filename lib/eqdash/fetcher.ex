@@ -4,6 +4,7 @@ defmodule Eqdash.Fetcher do
   alias Eqdash.Event
   alias Eqdash.Repo
 
+  @usgs_api Application.get_env(:eqdash, :usgs_api)
   @every_thirty_minutes 1000 * 60 * 30
 
   def start_link do
@@ -16,7 +17,7 @@ defmodule Eqdash.Fetcher do
   end
 
   def handle_info(:fetch, state) do
-    {:ok, response} = USGS.events({:all, :hour})
+    {:ok, response} = @usgs_api.events({:all, :hour})
     events = response.body |> EventMapper.from_usgs
 
     new_events = upsert_events(events)
