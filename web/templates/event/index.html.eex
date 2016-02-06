@@ -7,8 +7,7 @@
 </div>
 <script>
 var map;
-var markers = {};
-var circles = {};
+var refs = {};
 
 function initMap() {
   map = new google.maps.Map(document.getElementById('map'), {
@@ -31,43 +30,33 @@ function initMap() {
 
 function addEvents(events) {
   events.forEach(event => {
-    addMarker(event);
-    addCircle(event);
+    addEvent(event);
   });
 }
 
-function addMarker(event) {
+function updateEvents(events) {
+  events.forEach(event => {
+    updateEvent(event);
+  });
+}
+
+function addEvent(event) {
+  var latLng = {
+    lat: parseFloat(event.latitude),
+    lng: parseFloat(event.longitude)
+  };
+
   var marker = new google.maps.Marker({
     animation: google.maps.Animation.DROP,
-    position: {
-      lat: parseFloat(event.latitude),
-      lng: parseFloat(event.longitude)
-    },
+    position: latLng,
     map: map,
     title: event.place
   });
 
-  var content = '<div class="info-window-content">'+
-    '<h6>Event information</h6>'+
-    '<ul>'+
-      '<li><strong>Where:</strong> ' + event.place + '</li>'+
-      '<li><strong>When:</strong> ' + event.time_local + '</li>'+
-      '<li><strong>Magnitude:</strong> ' + event.magnitude + ' (' + event.magnitude_type + ')</li>'+
-    '</ul>'+
-    '</div>';
-
   var infoWindow = new google.maps.InfoWindow({
-    content: content
+    content: infoWindowContent(event)
   });
 
-  marker.addListener('click', function() {
-    infoWindow.open(map, marker);
-  });
-
-  markers[event.event_id] = { marker: marker, info_window: infoWindow };
-}
-
-function addCircle(event) {
   var circle = new google.maps.Circle({
     strokeColor: '#FF0000',
     strokeOpacity: 0.8,
@@ -75,13 +64,48 @@ function addCircle(event) {
     fillColor: '#FF0000',
     fillOpacity: 0.35,
     map: map,
-    center: {
-      lat: parseFloat(event.latitude),
-      lng: parseFloat(event.longitude)
-    },
+    center: latLng,
     radius: parseInt(event.magnitude) * 10000
   });
 
-  circles[event.event_id] = circle;
+  marker.addListener('click', function() {
+    infoWindow.open(map, marker);
+  });
+
+  refs[event.event_id] = {
+    circle: circle,
+    infoWindow: infoWindow,
+    marker: marker
+  };
+}
+
+function updateEvent(event) {
+  var marker = refs[event.event_id].marker,
+      circle = refs[event.event_id].circle,
+      infoWindow = refs[event.event_id].infoWindow,
+      latLng = {
+        lat: parseFloat(event.latitude),
+        lng: parseFloat(event.longitude)
+      };
+
+  marker.setPosition(latLng);
+  marker.setAnimation(google.maps.Animation.BOUNCE);
+  circle.setCenter(latLng);
+  infoWindow.setContent(infoWindowContent(event))
+
+  setTimeout(function() {
+    marker.setAnimation(null);
+  }, 1400)
+}
+
+function infoWindowContent(event) {
+  return '<div class="info-window-content">'+
+    '<h6>Event information</h6>'+
+    '<ul>'+
+      '<li><strong>Where:</strong> ' + event.place + '</li>'+
+      '<li><strong>When:</strong> ' + event.time_local + '</li>'+
+      '<li><strong>Magnitude:</strong> ' + event.magnitude + ' (' + event.magnitude_type + ')</li>'+
+    '</ul>'+
+  '</div>';
 }
 </script>

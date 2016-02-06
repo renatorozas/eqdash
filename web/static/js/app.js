@@ -35,6 +35,7 @@ class EventBox extends React.Component {
     channel.on('events_updates', resp => {
       console.log('Events updates:', resp)
 
+      updateEvents(resp.updated_events)
       addEvents(resp.new_events)
 
       let events = self.state.events.concat(resp.new_events)
