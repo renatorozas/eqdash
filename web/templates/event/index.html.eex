@@ -7,10 +7,12 @@
 </div>
 <script>
 var map;
+var markers = {};
+var circles = {};
 
 function initMap() {
   map = new google.maps.Map(document.getElementById('map'), {
-    zoom: 4,
+    zoom: 2,
     mapTypeId: google.maps.MapTypeId.HYBRID,
     mapTypeControl: false,
     streetViewControl: false,
@@ -28,10 +30,10 @@ function initMap() {
 }
 
 function addEvents(events) {
-  for (var i in events) {
-    addMarker(events[i]);
-    addCircle(events[i]);
-  }
+  events.forEach(event => {
+    addMarker(event);
+    addCircle(event);
+  });
 }
 
 function addMarker(event) {
@@ -61,6 +63,8 @@ function addMarker(event) {
   marker.addListener('click', function() {
     infoWindow.open(map, marker);
   });
+
+  markers[event.event_id] = { marker: marker, info_window: infoWindow };
 }
 
 function addCircle(event) {
@@ -77,5 +81,7 @@ function addCircle(event) {
     },
     radius: parseInt(event.magnitude) * 10000
   });
+
+  circles[event.event_id] = circle;
 }
 </script>
