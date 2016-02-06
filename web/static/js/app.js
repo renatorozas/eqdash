@@ -18,9 +18,9 @@ import "phoenix_html"
 // Local files can be imported directly using relative
 // paths "./socket" or full ones "web/static/js/socket".
 
-import socket from "./socket"
-import React from "react"
-import ReactDOM from "react-dom"
+import socket from './socket'
+import React from 'react'
+import ReactDOM from 'react-dom'
 
 class EventBox extends React.Component {
   constructor(props) {
@@ -29,21 +29,34 @@ class EventBox extends React.Component {
   }
   componentWillMount() {
     // Now that you are connected, you can join channels with a topic:
-    let channel = socket.channel("events:index", {})
+    let channel = socket.channel('events:index', {})
     let self = this
 
-    channel.on("new_events", payload => {
-      console.log(payload);
+    channel.on('events_updated', resp => {
+      console.log('Events updated:', resp);
+      // TODO: Handle updates.
+    });
+
+    channel.on('events_added', resp => {
+      console.log('Events added:', resp)
+
+      addEvents(resp.events)
+
+      let events = self.state.events.concat(resp.events)
+
+      self.setState({ events: events })
     });
 
     channel.join()
-      .receive("ok", resp => {
-        console.log("Subscribed successfully")
+      .receive('ok', resp => {
+        console.log('Subscribed successfully')
+
         self.setState(resp)
+
         addEvents(resp.events)
       })
-      .receive("error", resp => {
-        console.log("Unable to Subscribe", resp)
+      .receive('error', resp => {
+        console.log('Unable to Subscribe', resp)
       })
   }
   render() {
