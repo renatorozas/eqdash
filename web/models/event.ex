@@ -9,6 +9,7 @@ defmodule Eqdash.Event do
       :latitude,
       :longitude,
       :magnitude,
+      :magnitude_type,
       :place,
       :time_local
     ]
