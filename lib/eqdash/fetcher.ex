@@ -70,15 +70,11 @@ defmodule Eqdash.Fetcher do
     Eqdash.Endpoint.broadcast_from!(
       self,
       "events:index",
-      "events_added",
-      %{events: payload.new_events}
-    )
-
-    Eqdash.Endpoint.broadcast_from!(
-      self,
-      "events:index",
-      "events_updated",
-      %{events: payload.updated_events}
+      "events_updates",
+      %{
+        new_events: payload.new_events,
+        updated_events: payload.updated_events
+      }
     )
   end
 

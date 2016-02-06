@@ -32,17 +32,12 @@ class EventBox extends React.Component {
     let channel = socket.channel('events:index', {})
     let self = this
 
-    channel.on('events_updated', resp => {
-      console.log('Events updated:', resp);
-      // TODO: Handle updates.
-    });
+    channel.on('events_updates', resp => {
+      console.log('Events updates:', resp)
 
-    channel.on('events_added', resp => {
-      console.log('Events added:', resp)
+      addEvents(resp.new_events)
 
-      addEvents(resp.events)
-
-      let events = self.state.events.concat(resp.events)
+      let events = self.state.events.concat(resp.new_events)
 
       self.setState({ events: events })
     });

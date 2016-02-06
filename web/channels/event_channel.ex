@@ -8,22 +8,17 @@ defmodule Eqdash.EventChannel do
     {:ok, %{events: events}, socket}
   end
 
-  def join("events:" <> _private_subtopic_id, _params, socket) do
+  def join("events:" <> _private_subtopic_id, _params, _socket) do
     {:error, %{reason: "unauthorized"}}
   end
 
-  def handle_out("events_updated", payload, socket) do
-    events = payload.events |> EventView.decorate_events
+  def handle_in("events_updates", %{new_events: new_events, updated_events: updated_events}, socket) do
+    payload = %{
+      new_events: new_events |> EventView.decorate_events,
+      updated_events: updated_events |> EventView.decorate_events,
+    }
 
-    push socket, "events_updated", %{events: events}
-
-    {:noreply, socket}
-  end
-
-  def handle_out("events_added", payload, socket) do
-    events = payload.events |> EventView.decorate_events
-
-    push socket, "events_added", %{events: events}
+    broadcast! socket, "event_updates", payload
 
     {:noreply, socket}
   end
