@@ -68,7 +68,11 @@ class EventList extends React.Component {
   render() {
     let rows = this.props.events.map((event) => {
       return (
-        <Event key={event.event_id} place={event.place} time={event.time_local} magnitude={event.magnitude} />
+        <Event key={event.event_id}
+          place={event.place}
+          time={event.time_local}
+          magnitude={event.magnitude}
+          magnitude_type={event.magnitude_type} />
       )
     })
     return (
@@ -94,7 +98,7 @@ class Event extends React.Component {
       <tr>
         <td>{this.props.place}</td>
         <td>{this.props.time}</td>
-        <td>{this.props.magnitude}</td>
+        <td>{this.props.magnitude} ({this.props.magnitude_type})</td>
       </tr>
     )
   }

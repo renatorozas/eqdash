@@ -52,7 +52,7 @@ function addMarker(event) {
     '<ul>'+
       '<li><strong>Where:</strong> ' + event.place + '</li>'+
       '<li><strong>When:</strong> ' + event.time_local + '</li>'+
-      '<li><strong>Magnitude:</strong> ' + event.magnitude + '</li>'+
+      '<li><strong>Magnitude:</strong> ' + event.magnitude + ' (' + event.magnitude_type + ')</li>'+
     '</ul>'+
     '</div>';
 
