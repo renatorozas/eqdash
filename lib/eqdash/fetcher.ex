@@ -20,7 +20,6 @@ defmodule Eqdash.Fetcher do
     response.body
     |> EventMapper.from_usgs
     |> insert_or_update_events
-    |> broadcast
 
     schedule(:fetch, @every_thirty_minutes)
 
