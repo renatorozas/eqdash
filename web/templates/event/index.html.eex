@@ -29,13 +29,13 @@ function initMap() {
 }
 
 function addEvents(events) {
-  events.forEach(event => {
+  events.forEach(function(event) {
     addEvent(event);
   });
 }
 
 function updateEvents(events) {
-  events.forEach(event => {
+  events.forEach(function(event) {
     updateEvent(event);
   });
 }
