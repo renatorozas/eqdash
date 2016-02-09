@@ -28,7 +28,7 @@
       <%= render @view_module, @view_template, assigns %>
     </main>
 
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRiCcfbEtvvz2_jQ_lDcs0voDEVkG6_jA&callback=initMap"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRiCcfbEtvvz2_jQ_lDcs0voDEVkG6_jA"></script>
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
   </body>
 </html>
