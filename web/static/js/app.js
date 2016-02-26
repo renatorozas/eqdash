@@ -18,94 +18,88 @@ import "phoenix_html"
 // Local files can be imported directly using relative
 // paths "./socket" or full ones "web/static/js/socket".
 
-import socket from './socket'
-import React from 'react'
-import ReactDOM from 'react-dom'
+import socket from "./socket"
 
-class EventBox extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {events: []};
+class GoogleMap {
+  constructor(elementId) {
+    this.refs = {}
+    this.map = new google.maps.Map(document.getElementById(elementId), {
+      zoom: 2,
+      mapTypeId: google.maps.MapTypeId.HYBRID,
+      mapTypeControl: false,
+      streetViewControl: false,
+      scrollwheel: false
+    })
+
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        let initialLocation = new google.maps.LatLng(
+          position.coords.latitude,
+          position.coords.longitude
+        )
+        this.map.setCenter(initialLocation)
+      })
+    } else {
+      this.map.setCenter(new google.maps.LatLng(47.6149942, -122.4759899))
+    }
   }
-  componentWillMount() {
-    // Now that you are connected, you can join channels with a topic:
-    let channel = socket.channel('events:index', {})
-    let self = this
+  addMarker(id, options) {
+    let marker = new google.maps.Marker(
+      Object.assign({ map: this.map }, options)
+    )
 
-    channel.on('events_updates', resp => {
-      console.log('Events updates:', resp)
+    this.refs[id] = { marker: marker }
 
-      updateEvents(resp.updated_events)
-      addEvents(resp.new_events)
+    marker
+  }
+  addInfoWindow(markerId, options) {
+    let marker = this.refs[markerId].marker
+      , infoWindow = new google.maps.InfoWindow(options);
 
-      let events = self.state.events.concat(resp.new_events)
-
-      self.setState({ events: events })
+    marker.addListener('click', () => {
+      infoWindow.open(this.map, marker);
     });
 
-    channel.join()
-      .receive('ok', resp => {
-        console.log('Subscribed successfully')
-
-        self.setState(resp)
-
-        addEvents(resp.events)
-      })
-      .receive('error', resp => {
-        console.log('Unable to Subscribe', resp)
-      })
-  }
-  render() {
-    return (
-      <div className="eventBox">
-        <h5>Latest events</h5>
-        <EventList events={this.state.events} />
-      </div>
-    )
+    this.refs[markerId].infoWindow = infoWindow
   }
 }
 
-class EventList extends React.Component {
-  render() {
-    let rows = this.props.events.map((event) => {
-      return (
-        <Event key={event.event_id}
-          place={event.place}
-          time={event.time_local}
-          magnitude={event.magnitude}
-          magnitude_type={event.magnitude_type} />
-      )
+var refs = {}
+let map = new GoogleMap('map')
+
+let elmDiv = document.getElementById("elm-main")
+  , initialState = { eventList: [] }
+  , elmApp = Elm.embed(Elm.Eqdash, elmDiv, initialState)
+  , channel = socket.channel('events:index', {})
+
+channel.join().receive('ok', data => {
+  console.log("Subscribed successfully", data)
+
+  let events = data.events
+
+  elmApp.ports.eventList.send(events)
+
+  events.forEach(event => {
+    map.addMarker(event.id, {
+      animation: google.maps.Animation.DROP,
+      position: {
+        lat: parseFloat(event.location.latitude),
+        lng: parseFloat(event.location.longitude)
+      },
+      title: event.title
     })
-    return (
-      <table className="eventList">
-        <thead>
-          <tr>
-            <th>Where</th>
-            <th>When</th>
-            <th>Magnitude</th>
-          </tr>
-        </thead>
-        <tbody>
-          {rows}
-        </tbody>
-      </table>
-    )
-  }
-}
 
-class Event extends React.Component {
-  render() {
-    return (
-      <tr>
-        <td>{this.props.place}</td>
-        <td>{this.props.time}</td>
-        <td>{this.props.magnitude} ({this.props.magnitude_type})</td>
-      </tr>
-    )
-  }
-}
+    let infoWindowContent = '<div class="info-window-content">'+
+      '<h6>Event information</h6>'+
+      '<ul>'+
+        '<li><strong>Where:</strong> ' + event.title + '</li>'+
+        '<li><strong>When:</strong> ' + event.time + '</li>'+
+        '<li><strong>Magnitude:</strong> ' + event.magnitude + ')</li>'+
+      '</ul>'+
+    '</div>';
 
-ReactDOM.render(
-  <EventBox />,
-  document.getElementById('event-box')
-)
+    map.addInfoWindow(event.id, { content: infoWindowContent })
+  })
+}).receive("error", data => {
+  console.log("Unable to subscribe", data)
+})
