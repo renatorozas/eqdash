@@ -25,3 +25,5 @@ erl_crash.dump
 
 .DS_Store
 tags
+
+/web/elm/elm-stuff/
