@@ -1,7 +1,7 @@
 defmodule Eqdash.Fetcher do
   use GenServer
   import Ecto.Query, only: [from: 2]
-  alias Eqdash.{Event,Repo}
+  alias Eqdash.{Event, EventView, Repo}
 
   @usgs_api Application.get_env(:eqdash, :usgs_api)
   @every_thirty_minutes 1000 * 60 * 30
@@ -20,6 +20,8 @@ defmodule Eqdash.Fetcher do
     response.body
     |> EventMapper.from_usgs
     |> insert_or_update_events
+
+    broadcast
 
     schedule(:fetch, @every_thirty_minutes)
 
@@ -65,14 +67,13 @@ defmodule Eqdash.Fetcher do
     end)
   end
 
-  defp broadcast(payload) do
+  defp broadcast do
     Eqdash.Endpoint.broadcast_from!(
       self,
       "events:index",
       "events_updates",
       %{
-        new_events: payload.new_events,
-        updated_events: payload.updated_events
+        events: Event.latest(50) |> EventView.decorate_events
       }
     )
   end
