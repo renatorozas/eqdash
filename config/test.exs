@@ -18,4 +18,4 @@ config :eqdash, Eqdash.Repo,
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
 
-config :eqdash, :usgs_api, USGS.InMemory
+config :eqdash, :usgs_api, USGS
