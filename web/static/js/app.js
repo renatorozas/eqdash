@@ -65,21 +65,20 @@ channel.on("events_updates", data => {
 
   let events = data.events
 
-  if (events.length > 0) {
-    events.forEach(event => {
-      map.updateMarker(event.id, {
-        position: {
-          lat: parseFloat(event.location.latitude),
-          lng: parseFloat(event.location.longitude)
-        },
-        title: event.title
-      })
-
-      map.updateInfoWindow(event.id, {
-        content: infoWindowContent(event)
-      })
+  events.forEach(event => {
+    map.upsertMarker(event.id, {
+      animation: google.maps.Animation.DROP,
+      position: {
+        lat: parseFloat(event.location.latitude),
+        lng: parseFloat(event.location.longitude)
+      },
+      title: event.title
     })
-  }
+
+    map.upsertInfoWindow(event.id, {
+      content: infoWindowContent(event)
+    })
+  })
 
   elmApp.ports.eventList.send(events)
 })
