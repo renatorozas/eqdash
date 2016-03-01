@@ -5,6 +5,8 @@ import Effects exposing (Effects, Never)
 import Task exposing (Task)
 import Html exposing (..)
 import Html.Attributes exposing (class)
+import List.Extra
+import Maybe exposing (..)
 
 app : StartApp.App Model
 app =
@@ -12,7 +14,7 @@ app =
   { init = init
   , update = update
   , view = view
-  , inputs = [incomingActions]
+  , inputs = [incomingEvents]
   }
 
 main : Signal Html
@@ -124,6 +126,6 @@ eventRow address event =
 
 port eventList : Signal Model
 
-incomingActions : Signal Action
-incomingActions =
+incomingEvents : Signal Action
+incomingEvents =
   Signal.map SetEvents eventList
