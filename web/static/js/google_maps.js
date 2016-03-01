@@ -20,6 +20,8 @@ class GoogleMap {
     } else {
       this.map.setCenter(new google.maps.LatLng(47.6149942, -122.4759899))
     }
+
+    this.mc = new MarkerClusterer(this.map, this.markers)
   }
   getMarkers() {
     return Object.keys(this.refs).map(key => {
@@ -44,6 +46,7 @@ class GoogleMap {
     )
 
     this.refs[id] = { marker: marker }
+    this.mc.addMarker(marker)
 
     return marker
   }
