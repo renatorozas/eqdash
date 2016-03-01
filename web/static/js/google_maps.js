@@ -21,6 +21,23 @@ class GoogleMap {
       this.map.setCenter(new google.maps.LatLng(47.6149942, -122.4759899))
     }
   }
+  getMarkers() {
+    return Object.keys(this.refs).map(key => {
+      return this.refs[key].marker
+    })
+  }
+  getMarker(id) {
+    let ref = this.refs[id] || {}
+      , marker = ref.marker
+
+    return marker
+  }
+  getInfoWindow(markerId) {
+    let ref = this.refs[markerId] || {}
+      , infoWindow = ref.infoWindow
+
+    return infoWindow
+  }
   addMarker(id, options) {
     let marker = new google.maps.Marker(
       Object.assign({ map: this.map }, options)
@@ -31,8 +48,11 @@ class GoogleMap {
     return marker
   }
   addInfoWindow(markerId, options) {
-    let marker = this.refs[markerId].marker
-      , infoWindow = new google.maps.InfoWindow(options)
+    let marker = this.getMarker(markerId)
+
+    if (!marker) return
+
+    let infoWindow = new google.maps.InfoWindow(options)
 
     marker.addListener('click', () => {
       infoWindow.open(this.map, marker)
@@ -40,27 +60,45 @@ class GoogleMap {
 
     this.refs[markerId].infoWindow = infoWindow
   }
-  updateMarker(id, options) {
-    var ref = this.refs[id]
-
-    if (!ref) return
-
+  updateMarker(marker, options) {
     if (options.position) {
-      ref.marker.setPosition(options.position)
+      marker.setPosition(options.position)
     }
 
     if (options.title) {
-      ref.marker.setTitle(options.title)
+      marker.setTitle(options.title)
     }
+
+    marker
   }
-  updateInfoWindow(id, options) {
-    var ref = this.refs[id]
-
-    if (!ref) return
-
+  updateInfoWindow(infoWindow , options) {
     if (options.content) {
-      ref.infoWindow.setContent(options.content)
+      infoWindow.setContent(options.content)
     }
+
+    infoWindow
+  }
+  upsertMarker(id, options) {
+    var marker = this.getMarker(id)
+
+    if (marker) {
+      this.updateMarker(marker, options)
+    } else {
+      this.addMarker(id, options)
+    }
+
+    marker
+  }
+  upsertInfoWindow(markerId, options) {
+    var infoWindow = this.getInfoWindow(markerId)
+
+    if (infoWindow) {
+      this.updateInfoWindow(infoWindow, options)
+    } else {
+      this.addInfoWindow(markerId, options)
+    }
+
+    infoWindow
   }
 }
 
