@@ -12672,9 +12672,6 @@ Elm.Eqdash.make = function (_elm) {
            ,A2($Html.th,
            _U.list([$Html$Attributes.$class("hidden-sm-down")]),
            _U.list([$Html.text("When")]))
-           ,A2($Html.th,
-           _U.list([$Html$Attributes.$class("hidden-sm-down")]),
-           _U.list([$Html.text("Magnitude")]))
            ,A2($Html.th,_U.list([]),_U.list([]))]))]));
    var TaskDone = function (a) {
       return {ctor: "TaskDone",_0: a};
@@ -12705,9 +12702,6 @@ Elm.Eqdash.make = function (_elm) {
               ,A2($Html.td,
               _U.list([$Html$Attributes.$class("hidden-sm-down")]),
               _U.list([$Html.text(event.time)]))
-              ,A2($Html.td,
-              _U.list([$Html$Attributes.$class("hidden-sm-down")]),
-              _U.list([$Html.text(event.magnitude)]))
               ,A2($Html.td,
               _U.list([]),
               _U.list([A2($Html.a,

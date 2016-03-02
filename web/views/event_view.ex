@@ -5,7 +5,7 @@ defmodule Eqdash.EventView do
     Enum.map(events, fn(event) ->
       %{
         id: event.event_id,
-        title: event.place,
+        title: event.title,
         time: format_datetime(event.time_local),
         magnitude: event_magnitude(event),
         location: %{
