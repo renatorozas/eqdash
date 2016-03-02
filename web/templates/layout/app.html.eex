@@ -24,7 +24,7 @@
     <div class="container-fluid header">
       <h1 class="display">
         eqdash
-        <small class="text-muted">live earthquakes dashboard</small>
+        <small class="text-muted hidden-sm-down">live earthquakes dashboard</small>
       </h1>
     </div>
 
