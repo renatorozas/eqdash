@@ -69,9 +69,10 @@ view address model =
 latestEvents : Signal.Address Action -> Model -> Html
 latestEvents address model =
   div
-    []
+    [ class "col-md-12"
+    ]
     [
-      h5
+      h3
         []
         [ text "Latest Event" ]
       , eventsTable address model
@@ -80,7 +81,8 @@ latestEvents address model =
 eventsTable : Signal.Address Action -> Model -> Html
 eventsTable address model =
   table
-    []
+    [ class "table"
+    ]
     [
       eventTableHead
     , eventTableBody address model

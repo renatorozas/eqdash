@@ -9,19 +9,23 @@
 
     <title>eqdash</title>
     <!-- Google Fonts -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
+    <!--<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">-->
 
     <!-- CSS Reset -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css">
+    <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css">-->
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
 
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
   </head>
 
   <body>
-    <div class="container header">
-      <div class="page-header">
-        <h1>eqdash <small>live earthquakes dashboard</small></h1>
-      </div>
+    <div class="container-fluid header">
+      <h1 class="display">
+        eqdash
+        <small class="text-muted">live earthquakes dashboard</small>
+      </h1>
     </div>
 
     <main role="main">
@@ -37,6 +41,7 @@
       ga('create', 'UA-74430136-1', 'auto');
       ga('send', 'pageview');
     </script>
+
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRiCcfbEtvvz2_jQ_lDcs0voDEVkG6_jA"></script>
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
   </body>
