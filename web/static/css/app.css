@@ -1,22 +1,32 @@
 body {
-  margin-top: 1rem;
+  color: #606c76;
+}
+
+h1, h3 {
+  font-weight: 300;
 }
 
 #map {
-  height: 400px;
+  min-height: 400px;
+  max-height: 600px;
   width: 100%;
   margin-bottom: 2rem;
 }
 
-.page-header h1 > small {
-  font-size: 20px;
+.header {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 
-.stats h5 {
-  margin-bottom: 1rem;
+.header h1 {
+  font-size: 2.3rem;
 }
 
-div.info-window-content h6 {
+.header h1 > small {
+  font-size: 50%;
+}
+
+.info-window-content h6 {
   margin-bottom: 1rem;
 }
 

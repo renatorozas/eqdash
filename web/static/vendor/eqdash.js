@@ -12539,6 +12539,7 @@ Elm.Eqdash.make = function (_elm) {
    $Debug = Elm.Debug.make(_elm),
    $Effects = Elm.Effects.make(_elm),
    $Html = Elm.Html.make(_elm),
+   $Html$Attributes = Elm.Html.Attributes.make(_elm),
    $List = Elm.List.make(_elm),
    $Maybe = Elm.Maybe.make(_elm),
    $Result = Elm.Result.make(_elm),
@@ -12595,13 +12596,13 @@ Elm.Eqdash.make = function (_elm) {
            _U.list([$Html.text("Magnitude")]))]))]));
    var eventsTable = F2(function (address,model) {
       return A2($Html.table,
-      _U.list([]),
+      _U.list([$Html$Attributes.$class("table")]),
       _U.list([eventTableHead,A2(eventTableBody,address,model)]));
    });
    var latestEvents = F2(function (address,model) {
       return A2($Html.div,
-      _U.list([]),
-      _U.list([A2($Html.h5,
+      _U.list([$Html$Attributes.$class("col-md-12")]),
+      _U.list([A2($Html.h3,
               _U.list([]),
               _U.list([$Html.text("Latest Event")]))
               ,A2(eventsTable,address,model)]));
