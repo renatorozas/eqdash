@@ -12464,6 +12464,94 @@ Elm.Html.Attributes.make = function (_elm) {
                                         ,property: property
                                         ,attribute: attribute};
 };
+Elm.Html = Elm.Html || {};
+Elm.Html.Events = Elm.Html.Events || {};
+Elm.Html.Events.make = function (_elm) {
+   "use strict";
+   _elm.Html = _elm.Html || {};
+   _elm.Html.Events = _elm.Html.Events || {};
+   if (_elm.Html.Events.values) return _elm.Html.Events.values;
+   var _U = Elm.Native.Utils.make(_elm),
+   $Basics = Elm.Basics.make(_elm),
+   $Debug = Elm.Debug.make(_elm),
+   $Html = Elm.Html.make(_elm),
+   $Json$Decode = Elm.Json.Decode.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm),
+   $VirtualDom = Elm.VirtualDom.make(_elm);
+   var _op = {};
+   var keyCode = A2($Json$Decode._op[":="],
+   "keyCode",
+   $Json$Decode.$int);
+   var targetChecked = A2($Json$Decode.at,
+   _U.list(["target","checked"]),
+   $Json$Decode.bool);
+   var targetValue = A2($Json$Decode.at,
+   _U.list(["target","value"]),
+   $Json$Decode.string);
+   var defaultOptions = $VirtualDom.defaultOptions;
+   var Options = F2(function (a,b) {
+      return {stopPropagation: a,preventDefault: b};
+   });
+   var onWithOptions = $VirtualDom.onWithOptions;
+   var on = $VirtualDom.on;
+   var messageOn = F3(function (name,addr,msg) {
+      return A3(on,
+      name,
+      $Json$Decode.value,
+      function (_p0) {
+         return A2($Signal.message,addr,msg);
+      });
+   });
+   var onClick = messageOn("click");
+   var onDoubleClick = messageOn("dblclick");
+   var onMouseMove = messageOn("mousemove");
+   var onMouseDown = messageOn("mousedown");
+   var onMouseUp = messageOn("mouseup");
+   var onMouseEnter = messageOn("mouseenter");
+   var onMouseLeave = messageOn("mouseleave");
+   var onMouseOver = messageOn("mouseover");
+   var onMouseOut = messageOn("mouseout");
+   var onBlur = messageOn("blur");
+   var onFocus = messageOn("focus");
+   var onSubmit = messageOn("submit");
+   var onKey = F3(function (name,addr,handler) {
+      return A3(on,
+      name,
+      keyCode,
+      function (code) {
+         return A2($Signal.message,addr,handler(code));
+      });
+   });
+   var onKeyUp = onKey("keyup");
+   var onKeyDown = onKey("keydown");
+   var onKeyPress = onKey("keypress");
+   return _elm.Html.Events.values = {_op: _op
+                                    ,onBlur: onBlur
+                                    ,onFocus: onFocus
+                                    ,onSubmit: onSubmit
+                                    ,onKeyUp: onKeyUp
+                                    ,onKeyDown: onKeyDown
+                                    ,onKeyPress: onKeyPress
+                                    ,onClick: onClick
+                                    ,onDoubleClick: onDoubleClick
+                                    ,onMouseMove: onMouseMove
+                                    ,onMouseDown: onMouseDown
+                                    ,onMouseUp: onMouseUp
+                                    ,onMouseEnter: onMouseEnter
+                                    ,onMouseLeave: onMouseLeave
+                                    ,onMouseOver: onMouseOver
+                                    ,onMouseOut: onMouseOut
+                                    ,on: on
+                                    ,onWithOptions: onWithOptions
+                                    ,defaultOptions: defaultOptions
+                                    ,targetValue: targetValue
+                                    ,targetChecked: targetChecked
+                                    ,keyCode: keyCode
+                                    ,Options: Options};
+};
 Elm.StartApp = Elm.StartApp || {};
 Elm.StartApp.make = function (_elm) {
    "use strict";
@@ -12540,6 +12628,7 @@ Elm.Eqdash.make = function (_elm) {
    $Effects = Elm.Effects.make(_elm),
    $Html = Elm.Html.make(_elm),
    $Html$Attributes = Elm.Html.Attributes.make(_elm),
+   $Html$Events = Elm.Html.Events.make(_elm),
    $List = Elm.List.make(_elm),
    $Maybe = Elm.Maybe.make(_elm),
    $Result = Elm.Result.make(_elm),
@@ -12569,35 +12658,75 @@ Elm.Eqdash.make = function (_elm) {
          v);
       })) : _U.badPort("an array",v);
    });
+   var showEventOnMapMailbox = $Signal.mailbox("");
+   var eventToShowOnMap = Elm.Native.Port.make(_elm).outboundSignal("eventToShowOnMap",
+   function (v) {
+      return v;
+   },
+   showEventOnMapMailbox.signal);
+   var eventTableHead = A2($Html.thead,
+   _U.list([]),
+   _U.list([A2($Html.tr,
+   _U.list([]),
+   _U.list([A2($Html.th,_U.list([]),_U.list([$Html.text("Where")]))
+           ,A2($Html.th,
+           _U.list([$Html$Attributes.$class("hidden-sm-down")]),
+           _U.list([$Html.text("When")]))
+           ,A2($Html.th,
+           _U.list([$Html$Attributes.$class("hidden-sm-down")]),
+           _U.list([$Html.text("Magnitude")]))
+           ,A2($Html.th,_U.list([]),_U.list([]))]))]));
+   var TaskDone = function (a) {
+      return {ctor: "TaskDone",_0: a};
+   };
+   var update = F2(function (action,model) {
+      var _p0 = action;
+      switch (_p0.ctor)
+      {case "SetEvents": return {ctor: "_Tuple2"
+                                ,_0: _p0._0
+                                ,_1: $Effects.none};
+         case "ShowEventOnMap": var fx = A2($Effects.map,
+           TaskDone,
+           $Effects.task(A2($Signal.send,
+           showEventOnMapMailbox.address,
+           _p0._0.id)));
+           return {ctor: "_Tuple2",_0: model,_1: fx};
+         default: return {ctor: "_Tuple2",_0: model,_1: $Effects.none};}
+   });
+   var ShowEventOnMap = function (a) {
+      return {ctor: "ShowEventOnMap",_0: a};
+   };
    var eventRow = F2(function (address,event) {
       return A2($Html.tr,
       _U.list([]),
       _U.list([A2($Html.td,
               _U.list([]),
               _U.list([$Html.text(event.title)]))
-              ,A2($Html.td,_U.list([]),_U.list([$Html.text(event.time)]))
+              ,A2($Html.td,
+              _U.list([$Html$Attributes.$class("hidden-sm-down")]),
+              _U.list([$Html.text(event.time)]))
+              ,A2($Html.td,
+              _U.list([$Html$Attributes.$class("hidden-sm-down")]),
+              _U.list([$Html.text(event.magnitude)]))
               ,A2($Html.td,
               _U.list([]),
-              _U.list([$Html.text(event.magnitude)]))]));
+              _U.list([A2($Html.a,
+              _U.list([$Html$Attributes.$class("btn btn-link btn-sm")
+                      ,$Html$Attributes.href("#")
+                      ,A2($Html$Events.onClick,address,ShowEventOnMap(event))]),
+              _U.list([$Html.text("Show on map")]))]))]));
    });
    var eventTableBody = F2(function (address,model) {
       return A2($Html.tbody,
       _U.list([]),
       A2($List.map,eventRow(address),model));
    });
-   var eventTableHead = A2($Html.thead,
-   _U.list([]),
-   _U.list([A2($Html.tr,
-   _U.list([]),
-   _U.list([A2($Html.th,_U.list([]),_U.list([$Html.text("Where")]))
-           ,A2($Html.th,_U.list([]),_U.list([$Html.text("When")]))
-           ,A2($Html.th,
-           _U.list([]),
-           _U.list([$Html.text("Magnitude")]))]))]));
    var eventsTable = F2(function (address,model) {
-      return A2($Html.table,
+      return A2($Html.div,
+      _U.list([$Html$Attributes.$class("table-responsive")]),
+      _U.list([A2($Html.table,
       _U.list([$Html$Attributes.$class("table")]),
-      _U.list([eventTableHead,A2(eventTableBody,address,model)]));
+      _U.list([eventTableHead,A2(eventTableBody,address,model)]))]));
    });
    var latestEvents = F2(function (address,model) {
       return A2($Html.div,
@@ -12609,10 +12738,6 @@ Elm.Eqdash.make = function (_elm) {
    });
    var view = F2(function (address,model) {
       return A2(latestEvents,address,model);
-   });
-   var update = F2(function (action,model) {
-      var _p0 = action;
-      return {ctor: "_Tuple2",_0: _p0._0,_1: $Effects.none};
    });
    var SetEvents = function (a) {
       return {ctor: "SetEvents",_0: a};
@@ -12639,6 +12764,8 @@ Elm.Eqdash.make = function (_elm) {
                                ,Event: Event
                                ,init: init
                                ,SetEvents: SetEvents
+                               ,ShowEventOnMap: ShowEventOnMap
+                               ,TaskDone: TaskDone
                                ,update: update
                                ,view: view
                                ,latestEvents: latestEvents
@@ -12646,5 +12773,6 @@ Elm.Eqdash.make = function (_elm) {
                                ,eventTableHead: eventTableHead
                                ,eventTableBody: eventTableBody
                                ,eventRow: eventRow
+                               ,showEventOnMapMailbox: showEventOnMapMailbox
                                ,incomingEvents: incomingEvents};
 };

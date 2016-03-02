@@ -4,7 +4,8 @@ import StartApp
 import Effects exposing (Effects, Never)
 import Task exposing (Task)
 import Html exposing (..)
-import Html.Attributes exposing (class)
+import Html.Events exposing (onClick)
+import Html.Attributes exposing (class, href)
 import List.Extra
 import Maybe exposing (..)
 
@@ -51,6 +52,8 @@ init =
 
 type Action
   = SetEvents Model
+  | ShowEventOnMap Event
+  | TaskDone ()
 
 -- UPDATE
 
@@ -59,6 +62,16 @@ update action model =
   case action of
     SetEvents events ->
       ( events, Effects.none )
+    ShowEventOnMap event ->
+      let
+        fx =
+          Signal.send showEventOnMapMailbox.address event.id
+            |> Effects.task
+            |> Effects.map TaskDone
+      in
+        ( model, fx )
+    TaskDone () ->
+      ( model, Effects.none )
 
 -- VIEW
 
@@ -80,12 +93,16 @@ latestEvents address model =
 
 eventsTable : Signal.Address Action -> Model -> Html
 eventsTable address model =
-  table
-    [ class "table"
-    ]
+  div
+    [ class "table-responsive" ]
     [
-      eventTableHead
-    , eventTableBody address model
+      table
+        [ class "table"
+        ]
+        [
+          eventTableHead
+        , eventTableBody address model
+        ]
     ]
 
 eventTableHead : Html
@@ -95,10 +112,10 @@ eventTableHead =
     [
       tr
         []
-        [
-          th [] [ text "Where" ],
-          th [] [ text "When" ],
-          th [] [ text "Magnitude" ]
+        [ th [] [ text "Where" ]
+        , th [ class "hidden-sm-down" ] [ text "When" ]
+        , th [ class "hidden-sm-down" ] [ text "Magnitude" ]
+        , th [] []
         ]
     ]
 
@@ -117,14 +134,39 @@ eventRow address event =
         []
         [ text event.title ]
     , td
-        []
+        [ class "hidden-sm-down" ]
         [ text event.time ]
     , td
-        []
+        [ class "hidden-sm-down" ]
         [ text event.magnitude ]
+    , td
+        []
+        [
+          a
+            [
+              class "btn btn-link btn-sm"
+            , href "#"
+            , onClick address (ShowEventOnMap event)
+            ]
+            [ text "Show on map"
+            ]
+        ]
     ]
 
--- SIGNALS
+-- MAILBOXES
+
+showEventOnMapMailbox : Signal.Mailbox String
+showEventOnMapMailbox =
+  Signal.mailbox ""
+
+-- PORTS
+
+-- outgoing
+port eventToShowOnMap : Signal String
+port eventToShowOnMap =
+  showEventOnMapMailbox.signal
+
+-- incoming
 
 port eventList : Signal Model
 

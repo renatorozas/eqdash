@@ -23,6 +23,22 @@ class GoogleMap {
 
     this.mc = new MarkerClusterer(this.map, this.markers)
   }
+  openInfoWindow(markerId) {
+    let infoWindow = this.getInfoWindow(markerId),
+        marker = this.getMarker(markerId)
+
+    if (!infoWindow || !marker) return
+
+    infoWindow.open(this.map, marker)
+  }
+  zoomToMarker(markerId) {
+    let marker = this.getMarker(markerId)
+
+    if (!marker) return
+
+    this.map.setZoom(10)
+    this.map.panTo(marker.position)
+  }
   getMarkers() {
     return Object.keys(this.refs).map(key => {
       return this.refs[key].marker

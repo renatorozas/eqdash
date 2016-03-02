@@ -83,3 +83,7 @@ channel.on("events_updates", data => {
 
   elmApp.ports.eventList.send(events)
 })
+
+elmApp.ports.eventToShowOnMap.subscribe(markerId => {
+  map.zoomToMarker(markerId)
+})
