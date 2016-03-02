@@ -12,20 +12,21 @@ defmodule Eqdash.EventTest do
     event_id: "some content",
     latitude: "120.5",
     longitude: "120.5",
-    magnitude: "120.5",
+    magnitude: 7.9,
     magnitude_type: "some content",
     mmi: "120.5",
     net: "some content",
-    place: "some content",
+    place: "23km SW of Coalinga, California",
     sig: 42,
     sources: "some content",
     status: "some content",
     time_local: "2010-04-17 14:10:00",
     time_utc: "2010-04-17 14:00:00",
+    title: "M 7.9 - 23km SW of Coalinga, California",
     tsunami: true,
     type: "some content",
     tz_offset_secs: 600,
-    updated: "2010-04-17 14:00:00"
+    updated: "2010-04-17 14:00:00",
   }
   @invalid_attrs %{}
 

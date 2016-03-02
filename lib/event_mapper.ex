@@ -32,6 +32,7 @@ defmodule EventMapper do
       status: data["properties"]["status"],
       time_local: time_local(data),
       time_utc: time_utc(data),
+      title: data["properties"]["title"],
       tsunami: tsunami(data),
       type: data["properties"]["type"],
       tz_offset_secs: tz_offset_secs(data),
