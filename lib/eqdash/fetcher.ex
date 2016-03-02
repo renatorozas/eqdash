@@ -4,7 +4,7 @@ defmodule Eqdash.Fetcher do
   alias Eqdash.{Event, EventView, Repo}
 
   @usgs_api Application.get_env(:eqdash, :usgs_api)
-  @every_thirty_minutes 1000 * 60 * 30
+  @every_ten_minutes 1000 * 60 * 10
 
   def start_link do
     GenServer.start_link(__MODULE__, %{fetch_count: 0})
@@ -23,7 +23,7 @@ defmodule Eqdash.Fetcher do
 
     broadcast
 
-    schedule(:fetch, @every_thirty_minutes)
+    schedule(:fetch, @every_ten_minutes)
 
     {:noreply, %{state | fetch_count: state[:fetch_count] + 1}}
   end
