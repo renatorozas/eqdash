@@ -33,6 +33,7 @@ defmodule Eqdash.Event do
     field :status, :string
     field :time_local, Ecto.DateTime
     field :time_utc, Ecto.DateTime
+    field :title, :string
     field :tsunami, :boolean, default: false
     field :type, :string
     field :tz_offset_secs, :integer
@@ -62,6 +63,7 @@ defmodule Eqdash.Event do
     status
     time_local
     time_utc
+    title
     tsunami
     type
     tz_offset_secs
