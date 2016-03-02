@@ -114,7 +114,6 @@ eventTableHead =
         []
         [ th [] [ text "Where" ]
         , th [ class "hidden-sm-down" ] [ text "When" ]
-        , th [ class "hidden-sm-down" ] [ text "Magnitude" ]
         , th [] []
         ]
     ]
@@ -136,9 +135,6 @@ eventRow address event =
     , td
         [ class "hidden-sm-down" ]
         [ text event.time ]
-    , td
-        [ class "hidden-sm-down" ]
-        [ text event.magnitude ]
     , td
         []
         [
