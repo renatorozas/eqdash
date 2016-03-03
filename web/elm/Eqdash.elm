@@ -12,11 +12,11 @@ import Maybe exposing (..)
 app : StartApp.App Model
 app =
   StartApp.start
-  { init = init
-  , update = update
-  , view = view
-  , inputs = [incomingEvents]
-  }
+    { init = init
+    , update = update
+    , view = view
+    , inputs = [ incomingEvents ]
+    }
 
 main : Signal Html
 main =
@@ -84,23 +84,20 @@ latestEvents address model =
   div
     [ class "col-md-12"
     ]
-    [
-      h3
+    [ h3
         []
         [ text "Latest Event" ]
-      , eventsTable address model
+    , eventsTable address model
     ]
 
 eventsTable : Signal.Address Action -> Model -> Html
 eventsTable address model =
   div
     [ class "table-responsive" ]
-    [
-      table
+    [ table
         [ class "table"
         ]
-        [
-          eventTableHead
+        [ eventTableHead
         , eventTableBody address model
         ]
     ]
@@ -109,14 +106,14 @@ eventTableHead : Html
 eventTableHead =
   thead
     []
-    [
-      tr
+    [ tr
         []
         [ th [] [ text "Where" ]
         , th [ class "hidden-sm-down" ] [ text "When" ]
         , th [] []
         ]
     ]
+
 
 eventTableBody : Signal.Address Action -> Model -> Html
 eventTableBody address model =
@@ -128,8 +125,7 @@ eventRow : Signal.Address Action -> Event -> Html
 eventRow address event =
   tr
     []
-    [
-      td
+    [ td
         []
         [ text event.title ]
     , td
@@ -137,10 +133,8 @@ eventRow address event =
         [ text event.time ]
     , td
         []
-        [
-          a
-            [
-              class "btn btn-link btn-sm"
+        [ a
+            [ class "btn btn-link btn-sm"
             , href "#"
             , onClick address (ShowEventOnMap event)
             ]
@@ -158,6 +152,7 @@ showEventOnMapMailbox =
 -- PORTS
 
 -- outgoing
+
 port eventToShowOnMap : Signal String
 port eventToShowOnMap =
   showEventOnMapMailbox.signal
@@ -165,7 +160,6 @@ port eventToShowOnMap =
 -- incoming
 
 port eventList : Signal Model
-
 incomingEvents : Signal Action
 incomingEvents =
   Signal.map SetEvents eventList
