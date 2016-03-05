@@ -1,7 +1,7 @@
 defmodule Eqdash.Fetcher do
   use GenServer
   import Ecto.Query, only: [from: 2]
-  alias Eqdash.{Event, EventView, Repo}
+  alias Eqdash.{Event, EventMapper, EventView, Repo}
 
   @usgs_api Application.get_env(:eqdash, :usgs_api)
   @every_ten_minutes 1000 * 60 * 10
