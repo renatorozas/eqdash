@@ -12668,7 +12668,9 @@ Elm.Eqdash.make = function (_elm) {
    _U.list([]),
    _U.list([A2($Html.tr,
    _U.list([]),
-   _U.list([A2($Html.th,_U.list([]),_U.list([$Html.text("Where")]))
+   _U.list([A2($Html.th,
+           _U.list([]),
+           _U.list([$Html.text("Description")]))
            ,A2($Html.th,
            _U.list([$Html$Attributes.$class("hidden-sm-down")]),
            _U.list([$Html.text("When")]))

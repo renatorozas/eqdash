@@ -9,6 +9,7 @@ import Html.Attributes exposing (class, href)
 import List.Extra
 import Maybe exposing (..)
 
+
 app : StartApp.App Model
 app =
   StartApp.start
@@ -18,20 +19,26 @@ app =
     , inputs = [ incomingEvents ]
     }
 
+
 main : Signal Html
 main =
   app.html
+
 
 port tasks : Signal (Task Never ())
 port tasks =
   app.tasks
 
+
+
 -- MODEL
+
 
 type alias LatLng =
   { latitude : String
   , longitude : String
   }
+
 
 type alias Event =
   { title : String
@@ -41,27 +48,36 @@ type alias Event =
   , id : String
   }
 
+
 type alias Model =
   List Event
+
 
 init : ( Model, Effects Action )
 init =
   ( [], Effects.none )
 
+
+
 -- ACTIONS
+
 
 type Action
   = SetEvents Model
   | ShowEventOnMap Event
   | TaskDone ()
 
+
+
 -- UPDATE
+
 
 update : Action -> Model -> ( Model, Effects Action )
 update action model =
   case action of
     SetEvents events ->
       ( events, Effects.none )
+
     ShowEventOnMap event ->
       let
         fx =
@@ -70,14 +86,19 @@ update action model =
             |> Effects.map TaskDone
       in
         ( model, fx )
+
     TaskDone () ->
       ( model, Effects.none )
 
+
+
 -- VIEW
+
 
 view : Signal.Address Action -> Model -> Html
 view address model =
   latestEvents address model
+
 
 latestEvents : Signal.Address Action -> Model -> Html
 latestEvents address model =
@@ -89,6 +110,7 @@ latestEvents address model =
         [ text "Latest Event" ]
     , eventsTable address model
     ]
+
 
 eventsTable : Signal.Address Action -> Model -> Html
 eventsTable address model =
@@ -102,13 +124,14 @@ eventsTable address model =
         ]
     ]
 
+
 eventTableHead : Html
 eventTableHead =
   thead
     []
     [ tr
         []
-        [ th [] [ text "Where" ]
+        [ th [] [ text "Description" ]
         , th [ class "hidden-sm-down" ] [ text "When" ]
         , th [] []
         ]
@@ -120,6 +143,7 @@ eventTableBody address model =
   tbody
     []
     (List.map (eventRow address) model)
+
 
 eventRow : Signal.Address Action -> Event -> Html
 eventRow address event =
@@ -143,21 +167,29 @@ eventRow address event =
         ]
     ]
 
+
+
 -- MAILBOXES
+
 
 showEventOnMapMailbox : Signal.Mailbox String
 showEventOnMapMailbox =
   Signal.mailbox ""
 
--- PORTS
 
+
+-- PORTS
 -- outgoing
+
 
 port eventToShowOnMap : Signal String
 port eventToShowOnMap =
   showEventOnMapMailbox.signal
 
+
+
 -- incoming
+
 
 port eventList : Signal Model
 incomingEvents : Signal Action

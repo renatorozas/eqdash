@@ -31,9 +31,8 @@ let elmDiv = document.getElementById("elm-main")
     return '<div class="info-window-content">'+
       '<h6>Event information</h6>'+
       '<ul>'+
-        '<li><strong>Where:</strong> ' + event.title + '</li>'+
+        '<li><strong>Description:</strong> ' + event.title + '</li>'+
         '<li><strong>When:</strong> ' + event.time + '</li>'+
-        '<li><strong>Magnitude:</strong> ' + event.magnitude + ')</li>'+
       '</ul>'+
     '</div>'
   }
