@@ -1,4 +1,4 @@
-defmodule EventMapper do
+defmodule Eqdash.EventMapper do
   @doc ~S"""
   Process and map a list of USGS events into a list of Eqdash.Event.
   """
