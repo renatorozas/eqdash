@@ -1,0 +1,12 @@
+{
+  "type":"FeatureCollection",
+  "metadata":{
+    "generated":1457211587000,
+    "url":"http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/1.0_hour.geojson",
+    "title":"USGS Magnitude 1.0+ Earthquakes, Past Hour",
+    "status":200,
+    "api":"1.5.0",
+    "count":2
+  },
+  "features":[]
+}
