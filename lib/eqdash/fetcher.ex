@@ -16,7 +16,7 @@ defmodule Eqdash.Fetcher do
   end
 
   def handle_info(:fetch, state) do
-    {:ok, response} = @usgs_api.events({:all, :hour})
+    {:ok, response} = @usgs_api.summary("all_hour")
     response.body
     |> EventMapper.from_usgs
     |> insert_or_update_events
