@@ -4,7 +4,7 @@ defmodule Eqdash.EventMapperTest do
   alias Eqdash.EventMapper
 
   test "when processing a valid usgs response, it returns an array of maps" do
-    json_response = File.read!("test/fixtures/usgs/valid_response.json")
+    json_response = File.read!("test/fixtures/usgs/summary/all_hour.json")
 
     assert EventMapper.from_usgs(json_response) == [
       %{
@@ -102,7 +102,7 @@ defmodule Eqdash.EventMapperTest do
   end
 
   test "when processing an empty, it returns an empty array" do
-    json_response = File.read!("test/fixtures/usgs/empty_response.json")
+    json_response = File.read!("test/fixtures/usgs/summary/all_hour_empty.json")
     assert EventMapper.from_usgs(json_response) == []
   end
 end
